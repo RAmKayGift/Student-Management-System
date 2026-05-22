@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="images/favicon.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Application Form</title>
+    <style>
+        :root {
+            --primary-color: #233ff3;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --border-radius: 6px;
+            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-gray);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-col {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .required-field::after {
+            content: " *";
+            color: var(--accent-color);
+        }
+
+        .optional-field::after {
+            content: " (optional)";
+            color: #999;
+            font-size: 0.9em;
+            font-weight: normal;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .section-title {
+            font-size: 1.2em;
+            color: var(--primary-color);
+            margin: 30px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .error-message {
+            color: var(--accent-color);
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .file-upload label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border: 1px dashed #ccc;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload label:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .file-upload label i {
+            color: var(--primary-color);
+            font-size: 1.2em;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-name {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Add to your existing CSS */
+.file-requirements i {
+    color: var(--primary-color);
+    margin-right: 5px;
+}
+
+.password-strength {
+    margin-top: 5px;
+    font-size: 0.8em;
+}
+
+.password-strength.weak {
+    color: var(--accent-color);
+}
+
+.password-strength.medium {
+    color: orange;
+}
+
+.password-strength.strong {
+    color: green;
+}
+
+        .file-requirements {
+            font-size: 0.8em;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .form-check input {
+            width: auto;
+        }
+
+        .form-check label {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Student Application Form</h1>
+        
+        <form id="enrollmentForm"action="submit_application.php" method="POST" enctype="multipart/form-data">
+            <div class="section-title">Personal Information</div>
+            
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="idNumber" class="required-field">ID Number</label>
+                        <input type="text" id="idNumber" name="idNumber" 
+                               pattern="[0-9]{13}" 
+                               title="ID number must be exactly 13 digits"
+                               maxlength="13"
+                               required>
+                        <div class="error-message" id="idNumberError">Please enter exactly 13 digits</div>
+                    </div>
+                </div>
+                
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="firstName" class="required-field">First Name</label>
+                        <input type="text" id="firstName" name="firstName" pattern="[A-Za-z\s]+" required>
+                        <div class="error-message" id="firstNameError">Please enter letters only (no spaces, numbers or special characters)</div>
+                        <div class="error-message" id="firstNameNoSpaceError" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="middleName" class="optional-field">Middle Name</label>
+                        <input type="text" id="middleName" name="middleName" pattern="[A-Za-z\s]*">
+                        <div class="error-message" id="middleNameError">Please enter letters only (no numbers or special characters)</div>
+                        <div class="error-message" id="middleNameNoSpaceError" style="display:none;"></div>
+                    </div>
+                </div>
+                
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="lastName" class="required-field">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" pattern="[A-Za-z\s]+" required>
+                        <div class="error-message" id="lastNameError">Please enter letters only (no numbers or special characters)</div>
+                        <div class="error-message" id="lastNameNoSpaceError" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="dob" class="required-field">Date of Birth</label>
+                        <input type="date" id="dob" name="dob" required>
+                    </div>
+                </div>
+                
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select...</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                            <option value="prefer-not-to-say">Prefer not to say</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="studentIdProof" class="required-field">Student ID Proof (PDF)</label>
+                <div class="file-upload">
+                    <label for="studentIdProof">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Choose PDF file</span>
+                    </label>
+                    <input type="file" id="studentIdProof" name="studentIdProof" accept=".pdf" required>
+                    <div class="file-name" id="studentIdProofName">No file chosen</div>
+                    <div class="file-requirements">Max file size: 5MB | PDF only</div>
+                </div>
+            </div>
+            
+            <div class="section-title">Contact Information</div>
+            
+            <div class="form-group">
+                <label for="address" class="required-field">Physical Address</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="emergencyContact" class="required-field">Parent/Guardian Names</label>
+                    <input type="text" id="emergencyContact" name="emergencyContact" pattern="[A-Za-z\s]+" required>
+                    <div class="error-message" id="emergencyContactError">Please enter letters only (no numbers or special characters)</div>
+                    <div class="error-message" id="emergencyContactNoSpaceError" style="display:none;"></div>
+                </div>
+            </div>
+
+            
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="parentPhone" class="required-field">Parent/Guardian Phone</label>
+                        <input type="tel" id="parentPhone"   name="parentPhone"  pattern="^\d{10}$"  maxlength="10"  required   inputmode="numeric">
+                        <div class="error-message" id="phoneError">Please enter a valid phone number (10 digits only)</div>
+                    </div>
+                </div>
+                
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="parentEmail" class="required-field">Parent/Guardian Email</label>
+                        <input type="email" id="parentEmail" name="parentEmail" required>
+                        <div class="error-message" id="emailError">Please enter a valid email address</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="guardianIdProof" class="required-field">Guardian ID Proof (PDF)</label>
+                <div class="file-upload">
+                    <label for="guardianIdProof">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Choose PDF file</span>
+                    </label>
+                    <input type="file" id="guardianIdProof" name="guardianIdProof" accept=".pdf" required>
+                    <div class="file-name" id="guardianIdProofName">No file chosen</div>
+                    <div class="file-requirements">Max file size: 5MB | PDF only</div>
+                </div>
+            </div>
+            
+            
+            <div class="section-title">Academic Information</div>
+            
+            <div class="form-row">
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="grade" class="required-field">Grade Applying For</label>
+                        <select id="grade" name="grade" required>
+                            <option value="">Select Grade</option>
+                            <option value="8">Grade 8</option>
+                            <option value="9">Grade 9</option>
+                            <option value="10">Grade 10</option>
+                            <option value="11">Grade 11</option>
+                            <option value="12">Grade 12</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-col">
+                    <div class="form-group">
+                        <label for="previousSchool">Previous School (Optional)</label>
+                        <input type="text" id="previousSchool" name="previousSchool" pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="academicRecords" class="required-field">Previous School Results (PDF)</label>
+                <div class="file-upload">
+                    <label for="academicRecords">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Choose PDF file</span>
+                    </label>
+                    <input type="file" id="academicRecords" name="academicRecords" accept=".pdf" required>
+                    <div class="file-name" id="academicRecordsName">No file chosen</div>
+                    <div class="file-requirements">Max file size: 5MB | PDF only</div>
+                </div>
+            </div>
+            
+            <div class="section-title">Health Information</div>
+            
+            <div class="form-group">
+                <label for="allergies">Allergies or Medical Conditions(Optional)</label>
+                <input type="text" id="allergies" name="allergies" placeholder="List Allergies">
+            </div>
+
+           
+<div class="section-title">Account Setup</div>
+
+<div class="form-group">
+    <label for="email" class="required-field">Email Address</label>
+    <input type="email" id="email" name="email" required>
+    <div class="error-message" id="emailError">Please enter a valid email address</div>
+</div>
+
+<div class="form-row">
+    <div class="form-col">
+        <div class="form-group">
+            <label for="password" class="required-field">Create Password</label>
+            <input type="password" id="password" name="password" 
+                   pattern="^(?=.*\d).{8,}$" 
+                   title="Password must be at least 8 characters long and include at least one number"
+                   required>
+            <div class="error-message" id="passwordError">Password must be 8+ characters with at least one number</div>
+            <div class="file-requirements">
+                <i class="fas fa-info-circle"></i> Remember this password - you'll need it to log in later
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-col">
+        <div class="form-group">
+            <label for="confirmPassword" class="required-field">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <div class="error-message" id="confirmPasswordError">Passwords must match</div>
+        </div>
+    </div>
+</div>
+            
+            <div class="form-group">
+                <div class="form-check">
+                    <input type="checkbox" id="consent" name="consent" required>
+                    <label for="consent" class="required-field">I certify that the information provided is accurate and complete</label>
+                </div>
+            </div>
+            
+            <button type="submit">Submit Enrollment</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('enrollmentForm');
+            
+            // Validate ID number to ensure exactly 13 digits
+            const idNumberInput = document.getElementById('idNumber');
+            const idNumberError = document.getElementById('idNumberError');
+            
+            idNumberInput.addEventListener('input', function() {
+                // Remove any non-digit characters
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                if (this.value.length !== 13) {
+                    idNumberError.style.display = 'block';
+                    this.setCustomValidity('ID number must be exactly 13 digits');
+                } else {
+                    idNumberError.style.display = 'none';
+                    this.setCustomValidity('');
+                }
+            });
+            
+            // Validate name fields to prevent numbers
+            const nameFields = ['firstName', 'middleName', 'lastName', 'emergencyContact'];
+            nameFields.forEach(field => {
+                const input = document.getElementById(field);
+                const error = document.getElementById(`${field}Error`);
+                
+                input.addEventListener('input', function() {
+                    if (input.value.match(/[0-9]/)) {
+                        error.style.display = 'block';
+                        input.setCustomValidity('Numbers are not allowed in name fields');
+                    } else {
+                        error.style.display = 'none';
+                        input.setCustomValidity('');
+                    }
+                });
+            });
+
+            document.getElementById("enrollmentForm").addEventListener("submit", function(e) {
+    let isValid = true;
+
+    const fieldsToCheck = [
+        { id: "firstName", errorId: "firstNameNoSpaceError", label: "First name" },
+        { id: "middleName", errorId: "middleNameNoSpaceError", label: "Middle name" },
+        { id: "lastName", errorId: "lastNameNoSpaceError", label: "Last name" },
+        { id: "emergencyContact", errorId: "emergencyContactNoSpaceError", label: "Parent/Guardian Names" }
+    ];
+
+    fieldsToCheck.forEach(field => {
+        const inputValue = document.getElementById(field.id).value.trim();
+        const errorElement = document.getElementById(field.errorId);
+
+        if (/\s/.test(inputValue)) {
+            errorElement.textContent = `${field.label} must not contain spaces.`;
+            errorElement.style.color = "red";
+            errorElement.style.display = "block";
+            isValid = false;
+        } else {
+            errorElement.textContent = "";
+            errorElement.style.display = "none";
+        }
+    });
+
+    if (!isValid) {
+        e.preventDefault(); // Stop form submission if invalid
+    }
+});
+            
+            // Validate phone number to ensure only digits
+            const phoneInput = document.getElementById('parentPhone');
+            const phoneError = document.getElementById('phoneError');
+            
+            phoneInput.addEventListener('input', function() {
+                if (phoneInput.value.match(/[^0-9]/)) {
+                    phoneError.style.display = 'block';
+                    phoneInput.setCustomValidity('Phone number should contain only digits');
+                } else {
+                    phoneError.style.display = 'none';
+                    phoneInput.setCustomValidity('');
+                }
+            });
+            
+            // File upload display names
+            const fileInputs = [
+                { input: 'studentIdProof', display: 'studentIdProofName' },
+                { input: 'guardianIdProof', display: 'guardianIdProofName' },
+                { input: 'academicRecords', display: 'academicRecordsName' }
+            ];
+            
+            fileInputs.forEach(file => {
+                const input = document.getElementById(file.input);
+                const display = document.getElementById(file.display);
+                
+                input.addEventListener('change', function() {
+                    if (this.files.length > 0) {
+                        display.textContent = this.files[0].name;
+                        
+                        // Validate file type and size
+                        if (!this.files[0].name.toLowerCase().endsWith('.pdf')) {
+                            display.textContent = 'Invalid file type (must be PDF)';
+                            this.value = '';
+                        } else if (this.files[0].size > 5 * 1024 * 1024) {
+                            display.textContent = 'File too large (max 5MB)';
+                            this.value = '';
+                        }
+                    } else {
+                        display.textContent = 'No file chosen';
+                    }
+                });
+            });
+
+            // Add to your existing validation code
+const emailInput = document.getElementById('email');
+const emailError = document.getElementById('emailError');
+const passwordInput = document.getElementById('password');
+const passwordError = document.getElementById('passwordError');
+const confirmPasswordInput = document.getElementById('confirmPassword');
+const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+// Email validation
+emailInput.addEventListener('input', function() {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.value)) {
+        emailError.style.display = 'block';
+        this.setCustomValidity('Please enter a valid email address');
+    } else {
+        emailError.style.display = 'none';
+        this.setCustomValidity('');
+    }
+});
+
+// Password validation with strength indicator
+passwordInput.addEventListener('input', function() {
+    const password = this.value;
+    
+    // Basic validation
+    if (!password.match(/^(?=.*\d).{8,}$/)) {
+        passwordError.style.display = 'block';
+        this.setCustomValidity('Password must be at least 8 characters with at least one number');
+    } else {
+        passwordError.style.display = 'none';
+        this.setCustomValidity('');
+    }
+    
+    // Check password match
+    if (confirmPasswordInput.value && password !== confirmPasswordInput.value) {
+        confirmPasswordError.style.display = 'block';
+        confirmPasswordInput.setCustomValidity('Passwords must match');
+    } else {
+        confirmPasswordError.style.display = 'none';
+        confirmPasswordInput.setCustomValidity('');
+    }
+});
+
+confirmPasswordInput.addEventListener('input', function() {
+    if (this.value !== passwordInput.value) {
+        confirmPasswordError.style.display = 'block';
+        this.setCustomValidity('Passwords must match');
+    } else {
+        confirmPasswordError.style.display = 'none';
+        this.setCustomValidity('');
+    }
+});
+            
+            // Form submission
+            /*form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Additional validation can be added here
+                if (form.checkValidity()) {
+                    alert('Form submitted successfully!');
+                    // form.submit(); // Uncomment to actually submit the form
+                } else {
+                    alert('Please fill out all required fields correctly.');
+                }
+            });*/
+        });
+
+    </script>
+</body>
+</html>

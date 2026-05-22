@@ -1,0 +1,87 @@
+/* General Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Sticky Navbar */
+.sticky-top {
+  top: 0;
+  z-index: 1000;
+}
+
+/* Navbar Links - Underline on Hover */
+nav ul li a {
+  position: relative;
+  padding-bottom: 3px;
+  color: white;
+  transition: color 0.3s ease-in-out;
+}
+
+nav ul li a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background-color: white;
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+nav ul li a:hover {
+  color: #f8f9fa;
+}
+
+/* Hero Section with Overlay */
+.hero-section {
+  position: relative;
+  background: url('assets/hero-image.jpg') no-repeat center center/cover;
+  padding: 100px 0;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.hero-section h1,
+.hero-section p {
+  position: relative;
+  z-index: 1;
+}
+
+/* Quick Links */
+.quick-links .quick-link {
+  display: block;
+  text-decoration: none;
+  color: black;
+}
+
+.quick-links img {
+  margin-bottom: 10px;
+}
+
+/* Footer */
+footer {
+  background-color: #343a40;
+}
+
+footer a {
+  color: #fff;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+  color: #ccc;
+}
